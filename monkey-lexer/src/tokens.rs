@@ -5,8 +5,8 @@ pub enum TokenTypes {
     Illegal,
     Eof,
 
-    Ident,
-    Int,
+    Ident(String),
+    Int(i64),
 
     Assign,
     Plus,
@@ -20,15 +20,25 @@ pub enum TokenTypes {
     RBrace,
 
     Function,
-    Let
+    Let,
 }
 
 impl FromStr for TokenTypes {
     type Err = ();
 
     fn from_str(string: &str) -> Result<Self, Self::Err> {
-        match string {
-            _ => Err(())
-        }
+        Ok(match string {
+            "" => Self::Eof,
+            "=" => Self::Assign,
+            "+" => Self::Plus,
+            "(" => Self::LParen,
+            ")" => Self::RParen,
+            "{" => Self::LBrace,
+            "}" => Self::RBrace,
+            "," => Self::Comma,
+            ";" => Self::Semicolon,
+
+            _ => Self::Illegal,
+        })
     }
 }
